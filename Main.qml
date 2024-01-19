@@ -34,7 +34,19 @@ Window {
                 }
             }
 
-
+            Node{
+                id: originNode
+                position:mesh.position
+                PerspectiveCamera {
+                    id: cameraNode
+                    z: 928
+                    onZChanged:{
+                        if (z<500){
+                            z=500;
+                        }
+                    }
+                }
+            }
             OrbitCameraController {
                 anchors.fill: parent
                 origin: originNode
@@ -44,52 +56,69 @@ Window {
                 eulerRotation.x: -30
                 eulerRotation.y: -70
             }
+            DirectionalLight {
+                eulerRotation.x: 30
+            }
+            // Model {
+            //     property int angle:0
+            //     position: Qt.vector3d(100, 0, 0)
+            //     rotation:Quaternion.fromAxisAndAngle(0,0,1,90)
+            //     source: "#Cylinder"
+            //     scale: Qt.vector3d(2, 0.1, 2)
+            //     materials: [ DefaultMaterial {
+            //         diffuseColor: "red"
+            //     }
+            //     ]
+            //     SequentialAnimation on angle {
+            //         loops: Animation.Infinite
+            //         NumberAnimation {
+            //             duration: 3000
+            //             to: 360
+            //             from: 0
+            //             easing.type:Easing.Linear
+            //         }
+            //     }
+            // }
 
             Model {
+                id:mesh
                 position: Qt.vector3d(0, 0, 0)
-                rotation:Quaternion.fromAxisAndAngle(1,0,0,90)
-                source: "#Cylinder"
-                scale: Qt.vector3d(2, 0.1, 2)
-                materials: [ DefaultMaterial {
-                    diffuseColor: "red"
-                }
-                ]
-            }
+                source: "qrc:/qt/qml/Fly/res/prt0005_mesh.mesh"
 
-            Model {
-                id: originNode
-                position: Qt.vector3d(0, 300, 0)
-                source: "#Sphere"
-
-                materials: [ DefaultMaterial {
-                    diffuseColor: "blue"
-                }
+                materials: [
+                    CustomMaterial{
+                        shadingMode: CustomMaterial.Unshaded
+                        vertexShader: "qrc:/qt/qml/Fly/res/shapes.vert"
+                        fragmentShader: "qrc:/qt/qml/Fly/res/shapes.frag"
+                        property TextureInput tex: TextureInput {
+                            enabled: true
+                            texture: Texture { source: "qrc:/qt/qml/Fly/res/white_granite.jpg" }
+                        }
+                        property real r:mesh.r
+                        property real b:mesh.b
+                        property real g:mesh.g
+                    }
                 ]
-                PerspectiveCamera {
-                    id: cameraNode
-                    z: 100
-                }
-                SequentialAnimation on y {
+                property real r
+                property real b
+                property real g
+                SequentialAnimation on r{
                     loops: Animation.Infinite
-                    NumberAnimation {
-                        duration: 3000
-                        to: 50
-                        from: 400
-                        easing.type:Easing.InQuad
-                    }
-                    NumberAnimation {
-                        duration: 3000
-                        to: 400
-                        from: 50
-                        easing.type:Easing.OutQuad
-                    }
+                    NumberAnimation { from: 0; to: 1; duration: 5000;easing.type:Easing.InQuad }
+                    NumberAnimation { from: 1; to: 0; duration: 5000;easing.type:Easing.OutQuad }
                 }
-
+                SequentialAnimation on b{
+                    loops: Animation.Infinite
+                    NumberAnimation { from: 0; to: 1; duration: 3000;easing.type:Easing.InQuad}
+                    NumberAnimation { from: 1; to: 0; duration: 3000;easing.type:Easing.OutQuad}
+                }
+                SequentialAnimation on g{
+                    loops: Animation.Infinite
+                    NumberAnimation { from: 0; to: 1; duration: 2000;easing.type:Easing.InQuad}
+                    NumberAnimation { from: 1; to: 0; duration: 2000;easing.type:Easing.OutQuad }
+                }
             }
-
-
         }
-
     }
 
     BorderImage {

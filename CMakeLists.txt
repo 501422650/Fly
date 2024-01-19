@@ -11,7 +11,6 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(appFly
     main.cpp
 )
-
 qt_add_qml_module(appFly
     URI Fly
     VERSION 1.0
@@ -20,6 +19,12 @@ qt_add_qml_module(appFly
         ./res/bg-1.png
         ./res/bg-2.png
         ./res/bg-3.png
+        ./res/prt0005_mesh.mesh
+        ./res/shapes.frag
+        ./res/shapes.vert
+        ./res/white_granite.jpg
+
+
 )
 add_subdirectory(QFModule)
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
